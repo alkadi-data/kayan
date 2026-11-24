@@ -1,0 +1,201 @@
+/* KAYAN — DM microsite */
+@font-face{font-family:"KAYAN Plex";src:url("assets/plex-arabic-700.woff2") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"KAYAN Plex";src:url("assets/plex-arabic-400.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"KAYAN Amiri";src:url("assets/amiri-400.woff2") format("woff2");font-weight:400;font-display:swap}
+
+:root{
+  --ink:#031222; --navy:#042141; --teal:#00BCCA; --deep:#01525F; --slate:#263A56; --paper:#F1F4F6;
+  --ew:min(90vw, 520px, 62svh);
+  --eh:calc(var(--ew) * .66);
+  --mx:50%; --my:35%;
+  --ease-out:cubic-bezier(.16,1,.3,1);
+  --ease-io:cubic-bezier(.65,.02,.2,1);
+}
+@supports not (height:1svh){ :root{ --ew:min(90vw, 520px, 62vh); } }
+
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--ink);overscroll-behavior:none}
+body{font-family:"KAYAN Plex",system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;color:var(--paper);
+  -webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;overflow:hidden}
+
+.stage{position:fixed;inset:0;overflow:hidden;
+  background:radial-gradient(ellipse 70% 55% at 50% 45%, #0a1e35 0%, #06162a 45%, #031222 75%, #020a14 100%)}
+.spot{position:absolute;inset:-20%;pointer-events:none;transition:opacity 1.2s;
+  background:radial-gradient(circle at var(--mx) var(--my), rgba(255,243,224,.085) 0, rgba(255,243,224,.035) 18%, transparent 42%)}
+.dust{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:.9}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.07;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 1 0'/></filter><rect width='240' height='240' filter='url(%23n)'/></svg>")}
+.stage::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 80% 75% at 50% 50%, transparent 55%, rgba(0,0,0,.55) 100%)}
+
+/* sound toggle */
+.sound{position:absolute;z-index:20;top:max(16px, env(safe-area-inset-top));left:max(16px, env(safe-area-inset-left));
+  width:44px;height:44px;border-radius:50%;border:1px solid rgba(241,244,246,.14);background:rgba(4,33,65,.35);
+  display:grid;place-items:center;cursor:pointer;color:rgba(241,244,246,.7);transition:background .3s,color .3s,transform .2s;
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.sound:hover{color:var(--paper);background:rgba(4,33,65,.6)}
+.sound:active{transform:scale(.94)}
+.sound svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.sound .spk{fill:currentColor;stroke:none}
+.sound .mute{display:none}
+.sound[aria-pressed="false"] .wave{display:none}
+.sound[aria-pressed="false"] .mute{display:inline}
+
+/* scene */
+.scene{position:absolute;left:50%;top:58%;transform:translate(-50%,-50%);width:var(--ew);
+  display:flex;flex-direction:column;align-items:center}
+.tilt{position:relative;width:var(--ew);height:var(--eh);
+  transform:perspective(1300px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));will-change:transform}
+.intro .tilt{animation:arrive 1.6s var(--ease-out) both}
+@keyframes arrive{from{opacity:0;transform:perspective(1300px) translateY(28px) rotateX(10deg) scale(.96)}to{opacity:1}}
+
+.shadow{position:absolute;left:4%;right:4%;bottom:-7%;height:22%;border-radius:50%;
+  background:radial-gradient(ellipse at 50% 50%, rgba(0,0,0,.65), rgba(0,0,0,0) 70%);filter:blur(6px);
+  transition:opacity 1s var(--ease-io), transform 1.2s var(--ease-io)}
+
+.env{position:absolute;inset:0;perspective:1500px;perspective-origin:50% 0}
+.back{position:absolute;inset:0;border-radius:6px;z-index:1;
+  background:linear-gradient(180deg,#020f20,#03192f);box-shadow:inset 0 0 0 1px rgba(60,100,150,.12)}
+
+/* card */
+.card{position:absolute;z-index:3;left:7%;width:86%;top:3%;height:calc(var(--ew) * .86 * .72);
+  border-radius:4px;transform-origin:50% 50%;will-change:transform;
+  box-shadow:0 1px 0 rgba(255,255,255,.9) inset, 0 10px 24px rgba(0,0,0,.35)}
+.card-paper{position:absolute;inset:0;border-radius:inherit;
+  background:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='p'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' seed='7'/><feColorMatrix values='0 0 0 0 .3 0 0 0 0 .32 0 0 0 0 .36 0 0 0 .09 0'/></filter><rect width='300' height='300' filter='url(%23p)'/></svg>"),
+    linear-gradient(175deg,#f8f9f8 0%,#eef1f2 55%,#dfe4e8 100%)}
+.card-frame{position:absolute;inset:4.2%;border-radius:2px;
+  box-shadow:0 0 0 1px rgba(255,255,255,.95), 1px 1px 0 1px rgba(120,138,156,.28)}
+.card-sheen{position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;
+  background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.75) 47%,rgba(255,255,255,0) 60%);
+  background-size:260% 100%;background-position:120% 0}
+.card-body{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;direction:rtl;padding:6% 8%;gap:calc(var(--ew) * .022)}
+.q1{margin:0;font-family:"KAYAN Amiri","Amiri",serif;font-weight:400;font-size:calc(var(--ew) * .052);line-height:1.5;color:#41546c}
+.rule{display:block;width:calc(var(--ew) * .08);height:2px;background:var(--teal);border-radius:2px}
+.q2{margin:0;font-weight:700;font-size:calc(var(--ew) * .092);line-height:1.3;color:var(--navy);white-space:nowrap}
+.q2 .w{display:inline-block}
+
+.share{position:relative;overflow:hidden;margin-top:calc(var(--ew) * .02);display:inline-flex;align-items:center;gap:10px;
+  min-height:44px;padding:0 calc(var(--ew) * .055);border-radius:999px;text-decoration:none;
+  font-weight:700;font-size:max(15px, calc(var(--ew) * .036));color:var(--paper);background:var(--navy);
+  box-shadow:0 1px 0 rgba(255,255,255,.12) inset, 0 8px 18px rgba(4,33,65,.28);
+  transition:transform .35s var(--ease-out), box-shadow .35s, background .35s}
+.share .xmark{width:1em;height:1em;fill:currentColor;opacity:.85}
+.share-shine{position:absolute;inset:0;background:linear-gradient(110deg,transparent 35%,rgba(0,188,202,.45) 50%,transparent 65%);
+  transform:translateX(120%);transition:transform .9s var(--ease-out)}
+.share:hover{transform:translateY(-2px);box-shadow:0 1px 0 rgba(255,255,255,.12) inset,0 14px 26px rgba(4,33,65,.36);background:#06284f}
+.share:hover .share-shine{transform:translateX(-120%)}
+.share:active{transform:translateY(0) scale(.97)}
+.share:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
+.share-label{position:relative}
+
+/* card text is revealed only once the card is out */
+.q1,.rule,.q2 .w,.share{opacity:0}
+.reveal .q1{animation:rise .9s var(--ease-out) .05s both}
+.reveal .rule{animation:draw .7s var(--ease-out) .45s both}
+.reveal .q2 .w{animation:focus 1.1s var(--ease-out) both}
+.reveal .q2 .w:nth-child(1){animation-delay:.75s}
+.reveal .q2 .w:nth-child(2){animation-delay:.95s}
+.reveal .q2 .w:nth-child(3){animation-delay:1.15s}
+.reveal .share{animation:rise 1s var(--ease-out) 2s both}
+.reveal .card-sheen{animation:sheen 1.6s var(--ease-io) .2s both}
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes draw{from{opacity:0;transform:scaleX(0)}to{opacity:1;transform:scaleX(1)}}
+@keyframes focus{from{opacity:0;transform:translateY(16px) scale(.96);filter:blur(8px)}to{opacity:1;transform:none;filter:blur(0)}}
+@keyframes sheen{0%{opacity:0;background-position:120% 0}20%{opacity:1}100%{opacity:0;background-position:-30% 0}}
+
+/* pocket */
+.pocket{position:absolute;inset:0;width:100%;height:100%;z-index:4;overflow:visible;
+  filter:drop-shadow(0 -2px 6px rgba(0,0,0,.35))}
+.pocket .soft{filter:blur(2px)}
+.pocket-tex,.pocket-light{position:absolute;inset:0;z-index:4;pointer-events:none;
+  clip-path:polygon(0 0,46.47% 51.85%,50% 48.18%,53.53% 51.85%,100% 0,100% 100%,0 100%)}
+.pocket-tex{opacity:.38;mix-blend-mode:soft-light;
+  background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='.012 .85' numOctaves='2' seed='3'/><feColorMatrix values='0 0 0 0 .6 0 0 0 0 .7 0 0 0 0 .85 0 0 0 .55 0'/></filter><rect width='260' height='260' filter='url(%23f)'/></svg>")}
+.pocket-light{background:radial-gradient(ellipse 70% 90% at var(--lx,30%) var(--ly,10%), rgba(170,205,240,.13), transparent 60%),
+  linear-gradient(160deg, transparent 50%, rgba(0,0,0,.22))}
+
+/* flap */
+.flap{position:absolute;left:0;top:0;width:100%;height:60.6%;z-index:5;transform-origin:50% 0;
+  transform-style:preserve-3d;-webkit-transform-style:preserve-3d;transform:rotateX(0deg)}
+.flap-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.flap-face svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.flap-out svg{filter:drop-shadow(0 5px 7px rgba(0,0,0,.45))}
+.flap-tex{position:absolute;inset:0;opacity:.38;mix-blend-mode:soft-light;
+  clip-path:polygon(0 0,100% 0,54.8% 93%,50% 100%,45.2% 93%);
+  background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='.012 .85' numOctaves='2' seed='5'/><feColorMatrix values='0 0 0 0 .6 0 0 0 0 .7 0 0 0 0 .85 0 0 0 .55 0'/></filter><rect width='260' height='260' filter='url(%23f)'/></svg>")}
+.flap-in{transform:rotateX(180deg)}
+.flap.behind{z-index:2}
+
+/* wax seal */
+.seal{position:absolute;z-index:6;left:50%;top:54%;width:calc(var(--ew) * .2);height:calc(var(--ew) * .2);
+  min-width:68px;min-height:68px;margin:0;padding:0;border:0;background:none;cursor:pointer;
+  transform:translate(-50%,-50%);border-radius:50%;touch-action:manipulation;
+  transition:transform .4s var(--ease-out), filter .4s}
+.seal::before{content:"";position:absolute;inset:4%;border-radius:50%;background:rgba(0,0,0,.6);
+  filter:blur(7px);transform:translate(3px,8px);transition:transform .4s var(--ease-out)}
+.seal:hover{transform:translate(-50%,-50%) scale(1.045)}
+.seal:hover::before{transform:translate(4px,12px)}
+.seal:active{transform:translate(-50%,-50%) scale(.96)}
+.seal:focus-visible{outline:2px solid var(--teal);outline-offset:6px}
+.seal-ring{position:absolute;inset:-6%;border-radius:50%;border:1px solid rgba(241,244,246,.35);opacity:0;pointer-events:none;
+  animation:ring 2.8s var(--ease-out) 1.8s infinite}
+@keyframes ring{0%{opacity:.0;transform:scale(.92)}15%{opacity:.55}100%{opacity:0;transform:scale(1.45)}}
+.half{position:absolute;inset:0;transition:transform .9s cubic-bezier(.4,0,.7,.2), opacity .7s ease .25s}
+.h1{clip-path:polygon(0 0,53% 0,46% 21%,56% 40%,44% 59%,54% 79%,47% 100%,0 100%)}
+.h2{clip-path:polygon(53% 0,100% 0,100% 100%,47% 100%,54% 79%,44% 59%,56% 40%,46% 21%)}
+.wax{position:absolute;inset:0;border-radius:50%;filter:url(#waxEdge);
+  background:radial-gradient(circle at 40% 34%, #13909c 0%, #06606c 38%, #024550 70%, #012b33 100%);
+  box-shadow:inset 0 0 0 calc(var(--ew) * .012) rgba(0,25,30,.25), inset 2px 3px 6px rgba(180,240,244,.25), inset -3px -5px 10px rgba(0,0,0,.45)}
+.wax::before{content:"";position:absolute;inset:15%;border-radius:50%;
+  box-shadow:0 0 0 2px rgba(0,28,34,.55), -1px -1px 0 2px rgba(110,215,222,.18), inset 2px 3px 6px rgba(0,0,0,.35)}
+.wax::after{content:"";position:absolute;left:18%;top:12%;width:34%;height:16%;border-radius:50%;
+  background:rgba(200,248,250,.22);filter:blur(4px);transform:rotate(-28deg)}
+.logo{position:absolute;left:21%;right:21%;top:27%;bottom:27%;
+  -webkit-mask:url("assets/kayan-logo-white.png") center/contain no-repeat;mask:url("assets/kayan-logo-white.png") center/contain no-repeat}
+.logo.lo{background:rgba(0,20,26,.6);transform:translate(1.4px,1.9px)}
+.logo.hi{background:rgba(160,236,240,.38);transform:translate(-1px,-1.2px)}
+.logo.face{background:linear-gradient(160deg,#0f808d 0%,#05616d 55%,#023f48 100%)}
+.chips{position:absolute;inset:0;pointer-events:none}
+.chips i{position:absolute;left:50%;top:50%;width:9%;height:7%;background:#05616d;opacity:0;
+  clip-path:polygon(0 30%,60% 0,100% 55%,40% 100%);box-shadow:inset 1px 1px 0 rgba(160,236,240,.3)}
+
+.seal.cracking{cursor:default}
+.seal.cracking::before{opacity:0;transition:opacity .4s}
+.seal.cracking .seal-ring{display:none}
+.seal.cracking .h1{transform:translate(-7%,1%) rotate(-5deg)}
+.seal.cracking .h2{transform:translate(7%,-1%) rotate(5deg)}
+.seal.broken .h1{transform:translate(-55%,150%) rotate(-48deg);opacity:0}
+.seal.broken .h2{transform:translate(55%,160%) rotate(40deg);opacity:0}
+.seal.cracking .half{transition:transform .14s ease-out}
+.seal.broken .half{transition:transform .95s cubic-bezier(.45,0,.75,.35), opacity .6s ease .35s}
+.seal.cracking .chips i{animation:chip .9s cubic-bezier(.2,.6,.4,1) both}
+.chips i:nth-child(1){--x:-80%;--y:-120%;--r:-90deg}
+.chips i:nth-child(2){--x:110%;--y:-90%;--r:120deg;width:6%;height:5%}
+.chips i:nth-child(3){--x:-140%;--y:60%;--r:200deg;width:7%}
+.chips i:nth-child(4){--x:150%;--y:80%;--r:-160deg}
+.chips i:nth-child(5){--x:20%;--y:-170%;--r:70deg;width:5%;height:5%}
+.chips i:nth-child(6){--x:-30%;--y:170%;--r:-60deg;width:6%}
+.chips i:nth-child(7){--x:90%;--y:20%;--r:150deg;width:4%;height:4%}
+@keyframes chip{0%{opacity:1;transform:translate(-50%,-50%)}70%{opacity:1}
+  100%{opacity:0;transform:translate(calc(-50% + var(--x) * 4),calc(-50% + var(--y) * 4 + 60%)) rotate(var(--r))}}
+.seal.gone{visibility:hidden}
+
+/* hint */
+.hint{margin:calc(var(--ew) * .12) 0 0;font-size:15px;font-weight:400;color:rgba(241,244,246,.62);letter-spacing:0;
+  display:flex;align-items:center;gap:12px;opacity:0;transition:opacity .6s, transform .6s}
+.hint::before,.hint::after{content:"";width:28px;height:1px;background:linear-gradient(90deg,transparent,rgba(0,188,202,.55))}
+.hint::after{transform:scaleX(-1)}
+.ready .hint{opacity:1;animation:breathe 3.2s ease-in-out 1s infinite}
+@keyframes breathe{50%{opacity:.55}}
+.opened .hint{opacity:0;transform:translateY(8px);animation:none}
+
+/* envelope leaves after the card is out (animated in script.js) */
+.card.lifted{z-index:8}
+
+@media (prefers-reduced-motion: reduce){
+  .seal-ring,.ready .hint{animation:none}
+  .reveal .q2 .w{animation-duration:.4s}
+}

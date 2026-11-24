@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#031222">
+<title>كيان</title>
+<meta name="description" content="بيننا وبينك سؤال…">
+<meta property="og:title" content="كيان">
+<meta property="og:description" content="بيننا وبينك سؤال…">
+<meta property="og:type" content="website">
+<meta property="og:image" content="assets/og.jpg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="كيان">
+<meta name="twitter:description" content="بيننا وبينك سؤال…">
+<meta name="twitter:image" content="assets/og.jpg">
+<link rel="preload" href="assets/plex-arabic-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="stage" id="stage">
+  <div class="spot" aria-hidden="true"></div>
+  <canvas class="dust" id="dust" aria-hidden="true"></canvas>
+  <div class="grain" aria-hidden="true"></div>
+
+  <button class="sound" id="sound" type="button" aria-label="الصوت" aria-pressed="true">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path class="spk" d="M4 9.5h3.2L12 5.5v13l-4.8-4H4z"/><path class="wave" d="M15.5 9a4.2 4.2 0 0 1 0 6M18 6.5a7.8 7.8 0 0 1 0 11"/><path class="mute" d="M15.5 9.5l5 5m0-5l-5 5"/></svg>
+  </button>
+
+  <div class="scene" id="scene">
+    <div class="tilt" id="tilt">
+      <div class="shadow" aria-hidden="true"></div>
+      <div class="env" id="env">
+        <!-- inside of the envelope -->
+        <div class="back" aria-hidden="true"></div>
+
+        <!-- the invitation card -->
+        <article class="card" id="card" aria-live="polite">
+          <div class="card-paper" aria-hidden="true"></div>
+          <div class="card-frame" aria-hidden="true"></div>
+          <div class="card-sheen" aria-hidden="true"></div>
+          <div class="card-body">
+            <p class="q1">بيننا وبينك سؤال…</p>
+            <span class="rule" aria-hidden="true"></span>
+            <h1 class="q2"><span class="w">سمعت</span> <span class="w">عن</span> <span class="w">كيان؟</span></h1>
+            <a class="share" id="share" target="_blank" rel="noopener" href="#">
+              <span class="share-shine" aria-hidden="true"></span>
+              <span class="share-label">شارك توقعاتك</span>
+              <svg class="xmark" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.8 3h3.1l-6.8 7.7L22 21h-6.2l-4.9-6.3L5.3 21H2.2l7.2-8.3L1.8 3h6.4l4.4 5.8zm-1.1 16.2h1.7L7.4 4.7H5.6z"/></svg>
+            </a>
+          </div>
+        </article>
+
+        <!-- front pocket -->
+        <svg class="pocket" viewBox="0 0 1000 660" preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <linearGradient id="gL" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#041b36"/><stop offset="1" stop-color="#072445"/></linearGradient>
+            <linearGradient id="gR" x1="1" y1="0" x2="0" y2="0"><stop offset="0" stop-color="#031830"/><stop offset="1" stop-color="#06213f"/></linearGradient>
+            <linearGradient id="gB" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#041c37"/><stop offset="1" stop-color="#0a2b4f"/></linearGradient>
+          </defs>
+          <path d="M0 0 L478 352 L0 660 Z" fill="url(#gL)"/>
+          <path d="M1000 0 L522 352 L1000 660 Z" fill="url(#gR)"/>
+          <path d="M0 660 L500 318 L1000 660 Z" fill="url(#gB)"/>
+          <path d="M0 660 L500 318 L1000 660" fill="none" stroke="#000" stroke-opacity=".35" stroke-width="7" class="soft"/>
+          <path d="M2 658 L500 320 L998 658" fill="none" stroke="#4776a3" stroke-opacity=".5" stroke-width="1.6" vector-effect="non-scaling-stroke"/>
+          <path d="M70 636 L500 342 L930 636" fill="none" stroke="#000" stroke-opacity=".3" stroke-width="1" vector-effect="non-scaling-stroke"/>
+          <path d="M72 638 L500 345 L928 638" fill="none" stroke="#5a88b6" stroke-opacity=".2" stroke-width="1" vector-effect="non-scaling-stroke"/>
+          <path d="M1 2 L478 352 M999 2 L522 352" fill="none" stroke="#33608c" stroke-opacity=".45" stroke-width="1.2" vector-effect="non-scaling-stroke"/>
+        </svg>
+        <div class="pocket-tex" aria-hidden="true"></div>
+        <div class="pocket-light" aria-hidden="true"></div>
+
+        <!-- top flap: navy outside, deep-teal lining inside -->
+        <div class="flap" id="flap" aria-hidden="true">
+          <div class="flap-face flap-out">
+            <svg viewBox="0 0 1000 400" preserveAspectRatio="none">
+              <defs><linearGradient id="gF" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#06213f"/><stop offset="1" stop-color="#0b2e55"/></linearGradient></defs>
+              <path d="M0 0 H1000 L548 372 Q500 404 452 372 Z" fill="url(#gF)"/>
+              <path d="M2 2 L452 372 Q500 404 548 372 L998 2" fill="none" stroke="#4a79a8" stroke-opacity=".5" stroke-width="1.4" vector-effect="non-scaling-stroke"/>
+              <path d="M70 26 L462 350 Q500 376 538 350 L930 26" fill="none" stroke="#000" stroke-opacity=".3" stroke-width="1" vector-effect="non-scaling-stroke"/>
+            </svg>
+            <div class="flap-tex"></div>
+          </div>
+          <div class="flap-face flap-in">
+            <svg viewBox="0 0 1000 400" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="gI" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#011f27"/><stop offset="1" stop-color="#013c46"/></linearGradient>
+                <pattern id="lines" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0 V14" stroke="#00BCCA" stroke-opacity=".07" stroke-width="2"/></pattern>
+              </defs>
+              <path d="M0 0 H1000 L548 372 Q500 404 452 372 Z" fill="url(#gI)"/>
+              <path d="M0 0 H1000 L548 372 Q500 404 452 372 Z" fill="url(#lines)"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- wax seal -->
+        <button class="seal" id="seal" type="button" aria-label="اضغط لفتح الرسالة">
+          <span class="seal-ring" aria-hidden="true"></span>
+          <span class="half h1" aria-hidden="true"><span class="wax"><span class="logo lo"></span><span class="logo hi"></span><span class="logo face"></span></span></span>
+          <span class="half h2" aria-hidden="true"><span class="wax"><span class="logo lo"></span><span class="logo hi"></span><span class="logo face"></span></span></span>
+          <span class="chips" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+        </button>
+      </div>
+    </div>
+    <p class="hint" id="hint">اضغط لفتح الرسالة</p>
+  </div>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <filter id="waxEdge" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="2" seed="4" result="t"/>
+      <feDisplacementMap in="SourceGraphic" in2="t" scale="9" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </svg>
+</main>
+<script src="script.js"></script>
+</body>
+</html>
